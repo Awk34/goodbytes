@@ -1,82 +1,73 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
-
 'use strict';
 
 var _ = require('lodash');
-var Thing = require('./thing.model');
+var Barcode = require('./barcode.model');
 
-// Get list of things
+// Get list of barcodes
 exports.index = function (req, res) {
-    Thing.find(function (err, things) {
+    Barcode.find(function (err, barcodes) {
         if (err) {
             return handleError(res, err);
         }
-        return res.json(200, things);
+        return res.json(200, barcodes);
     });
 };
 
-// Get a single thing
+// Get a single barcode
 exports.show = function (req, res) {
-    Thing.findById(req.params.id, function (err, thing) {
+    Barcode.findById(req.params.id, function (err, barcode) {
         if (err) {
             return handleError(res, err);
         }
-        if (!thing) {
+        if (!barcode) {
             return res.send(404);
         }
-        return res.json(thing);
+        return res.json(barcode);
     });
 };
 
-// Creates a new thing in the DB.
+// Creates a new barcode in the DB.
 exports.create = function (req, res) {
-    Thing.create(req.body, function (err, thing) {
+    Barcode.create(req.body, function (err, barcode) {
         if (err) {
             return handleError(res, err);
         }
-        return res.json(201, thing);
+        return res.json(201, barcode);
     });
 };
 
-// Updates an existing thing in the DB.
+// Updates an existing barcode in the DB.
 exports.update = function (req, res) {
     if (req.body._id) {
         delete req.body._id;
     }
-    Thing.findById(req.params.id, function (err, thing) {
+    Barcode.findById(req.params.id, function (err, barcode) {
         if (err) {
             return handleError(res, err);
         }
-        if (!thing) {
+        if (!barcode) {
             return res.send(404);
         }
-        var updated = _.merge(thing, req.body);
+        var updated = _.merge(barcode, req.body);
         updated.save(function (err) {
             if (err) {
                 return handleError(res, err);
             }
-            return res.json(200, thing);
+            return res.json(200, barcode);
         });
     });
 };
 
-// Deletes a thing from the DB.
+// Deletes a barcode from the DB.
 exports.destroy = function (req, res) {
-    Thing.findById(req.params.id, function (err, thing) {
+    Barcode.findById(req.params.id, function (err, barcode) {
         if (err) {
             return handleError(res, err);
         }
-        if (!thing) {
+        if (!barcode) {
             return res.send(404);
         }
-        thing.remove(function (err) {
+        barcode.remove(function (err) {
             if (err) {
                 return handleError(res, err);
             }

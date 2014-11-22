@@ -1,82 +1,73 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
-
 'use strict';
 
 var _ = require('lodash');
-var Thing = require('./thing.model');
+var Ingredient = require('./ingredient.model');
 
-// Get list of things
+// Get list of ingredients
 exports.index = function (req, res) {
-    Thing.find(function (err, things) {
+    Ingredient.find(function (err, ingredients) {
         if (err) {
             return handleError(res, err);
         }
-        return res.json(200, things);
+        return res.json(200, ingredients);
     });
 };
 
-// Get a single thing
+// Get a single ingredient
 exports.show = function (req, res) {
-    Thing.findById(req.params.id, function (err, thing) {
+    Ingredient.findById(req.params.id, function (err, ingredient) {
         if (err) {
             return handleError(res, err);
         }
-        if (!thing) {
+        if (!ingredient) {
             return res.send(404);
         }
-        return res.json(thing);
+        return res.json(ingredient);
     });
 };
 
-// Creates a new thing in the DB.
+// Creates a new ingredient in the DB.
 exports.create = function (req, res) {
-    Thing.create(req.body, function (err, thing) {
+    Ingredient.create(req.body, function (err, ingredient) {
         if (err) {
             return handleError(res, err);
         }
-        return res.json(201, thing);
+        return res.json(201, ingredient);
     });
 };
 
-// Updates an existing thing in the DB.
+// Updates an existing ingredient in the DB.
 exports.update = function (req, res) {
     if (req.body._id) {
         delete req.body._id;
     }
-    Thing.findById(req.params.id, function (err, thing) {
+    Ingredient.findById(req.params.id, function (err, ingredient) {
         if (err) {
             return handleError(res, err);
         }
-        if (!thing) {
+        if (!ingredient) {
             return res.send(404);
         }
-        var updated = _.merge(thing, req.body);
+        var updated = _.merge(ingredient, req.body);
         updated.save(function (err) {
             if (err) {
                 return handleError(res, err);
             }
-            return res.json(200, thing);
+            return res.json(200, ingredient);
         });
     });
 };
 
-// Deletes a thing from the DB.
+// Deletes a ingredient from the DB.
 exports.destroy = function (req, res) {
-    Thing.findById(req.params.id, function (err, thing) {
+    Ingredient.findById(req.params.id, function (err, ingredient) {
         if (err) {
             return handleError(res, err);
         }
-        if (!thing) {
+        if (!ingredient) {
             return res.send(404);
         }
-        thing.remove(function (err) {
+        ingredient.remove(function (err) {
             if (err) {
                 return handleError(res, err);
             }
